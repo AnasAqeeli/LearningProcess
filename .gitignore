@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# C compiled output
+*.o
+*.out
+a.out
+
+# Editor / OS junk
+.DS_Store
+*.swp
