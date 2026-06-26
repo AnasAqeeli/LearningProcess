@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roast &amp; Co. — Premium Coffee Beans Est. 1887</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #0e0500;
+      --espresso:   #1a0a00;
+      --roast:      #2d1200;
+      --mahogany:   #4a1c00;
+      --caramel:    #a05c1a;
+      --gold:       #c9a227;
+      --gold-light: #e8c96a;
+      --parchment:  #f0e0c0;
+      --cream:      #faf4e8;
+      --ivory:      #fffdf7;
+      --muted:      #8b6f52;
+      --text:       #2c1a0e;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--text);
+      background: var(--ivory);
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; line-height: 1.2; }
+
+    .section-label {
+      font-family: 'Cinzel', serif;
+      font-size: .72rem;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: .75rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.9rem, 4vw, 2.9rem);
+      color: var(--espresso);
+      margin-bottom: 1.2rem;
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .75s ease, transform .75s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: none; }
+    .d1 { transition-delay: .1s; }
+    .d2 { transition-delay: .2s; }
+    .d3 { transition-delay: .3s; }
+    .d4 { transition-delay: .4s; }
+
+    /* ── ANNOUNCE ── */
+    .announce {
+      background: var(--espresso);
+      color: var(--gold-light);
+      font-family: 'Cinzel', serif;
+      font-size: .68rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: .55rem 1rem;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--roast);
+      border-bottom: 1px solid rgba(201,162,39,.18);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      transition: background .3s, box-shadow .3s;
+    }
+    nav.scrolled { background: var(--espresso); box-shadow: 0 4px 24px rgba(0,0,0,.45); }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-family: 'Cinzel', serif;
+      font-size: .68rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: rgba(240,224,192,.65);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--gold-light); }
+
+    .nav-logo {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.45rem;
+      color: var(--cream);
+      text-align: center;
+    }
+    .nav-logo small {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: .52rem;
+      letter-spacing: .38em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-top: .15rem;
+    }
+
+    .cart-btn {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold-light);
+      padding: .45rem 1.1rem;
+      font-family: 'Cinzel', serif;
+      font-size: .66rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+    .cart-btn:hover { background: var(--gold); color: var(--espresso); }
+
+    #cart-count {
+      background: var(--gold);
+      color: var(--espresso);
+      border-radius: 50%;
+      width: 1.25rem;
+      height: 1.25rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .62rem;
+      font-weight: 700;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem;
+      background: var(--espresso);
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 75% 65% at 50% 50%, #3d1c02 0%, #1a0a00 55%, #0e0500 100%);
+    }
+
+    .hero-frame {
+      position: absolute;
+      inset: 2.5rem;
+      border: 1px solid rgba(201,162,39,.12);
+      pointer-events: none;
+    }
+    .hero-frame::before {
+      content: '✦';
+      position: absolute;
+      top: -.65rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(201,162,39,.35);
+      font-size: .9rem;
+      background: var(--espresso);
+      padding: 0 .5rem;
+    }
+    .hero-frame::after {
+      content: '✦';
+      position: absolute;
+      bottom: -.65rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(201,162,39,.35);
+      font-size: .9rem;
+      background: var(--espresso);
+      padding: 0 .5rem;
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 780px; }
+
+    .hero-badge {
+      display: inline-block;
+      border: 1px solid rgba(201,162,39,.5);
+      color: var(--gold);
+      font-family: 'Cinzel', serif;
+      font-size: .68rem;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+      padding: .38rem 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 7.5vw, 5.5rem);
+      font-weight: 900;
+      color: var(--cream);
+      margin-bottom: 1.5rem;
+      text-shadow: 0 2px 40px rgba(0,0,0,.4);
+    }
+    .hero h1 em { display: block; font-style: italic; color: var(--gold-light); }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: rgba(240,224,192,.7);
+      max-width: 520px;
+      margin: 0 auto 2.75rem;
+      line-height: 1.85;
+    }
+
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    .btn-gold {
+      background: var(--gold);
+      color: var(--espresso);
+      border: 2px solid var(--gold);
+      padding: .85rem 2.4rem;
+      font-family: 'Cinzel', serif;
+      font-size: .72rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-block;
+      transition: background .2s, color .2s, transform .2s;
+    }
+    .btn-gold:hover { background: transparent; color: var(--gold-light); transform: translateY(-2px); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--parchment);
+      border: 2px solid rgba(240,224,192,.28);
+      padding: .85rem 2.4rem;
+      font-family: 'Cinzel', serif;
+      font-size: .72rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-block;
+      transition: border-color .2s, transform .2s;
+    }
+    .btn-ghost:hover { border-color: var(--parchment); transform: translateY(-2px); }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      color: rgba(201,162,39,.4);
+      font-family: 'Cinzel', serif;
+      font-size: .58rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 46px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:.25} 50%{opacity:.8} }
+
+    /* ── MARQUEE ── */
+    .marquee { background: var(--gold); overflow: hidden; padding: .75rem 0; white-space: nowrap; }
+    .marquee-track { display: inline-block; animation: scroll 30s linear infinite; }
+    .marquee-track span {
+      font-family: 'Cinzel', serif;
+      font-size: .68rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--espresso);
+      padding: 0 1.8rem;
+    }
+    .marquee-track .dot { color: rgba(26,10,0,.35); padding: 0; }
+    @keyframes scroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ── STORY ── */
+    .story {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 8rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+
+    .story-frame {
+      border: 1px solid rgba(201,162,39,.2);
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      background: var(--cream);
+      position: relative;
+    }
+    .story-frame::before {
+      content: '';
+      position: absolute;
+      inset: .6rem;
+      border: 1px solid rgba(201,162,39,.08);
+      pointer-events: none;
+    }
+
+    .big-quote {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.4rem, 2.8vw, 2rem);
+      font-style: italic;
+      color: var(--roast);
+      line-height: 1.45;
+      border-left: 3px solid var(--gold);
+      padding-left: 1.5rem;
+    }
+    .quote-attr {
+      font-family: 'Cinzel', serif;
+      font-size: .65rem;
+      letter-spacing: .22em;
+      color: var(--gold);
+      padding-left: 1.5rem;
+    }
+    .story-icon { font-size: 5rem; text-align: center; }
+
+    .story-text p {
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+      font-size: 1.02rem;
+    }
+    .story-text p:first-of-type::first-letter {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.4rem;
+      font-weight: 700;
+      float: left;
+      line-height: 1;
+      margin: .05em .12em 0 0;
+      color: var(--gold);
+    }
+
+    /* ── STATS ── */
+    .stats {
+      background: var(--roast);
+      padding: 4.5rem 2rem;
+    }
+    .stats-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      color: var(--gold-light);
+      line-height: 1;
+      margin-bottom: .4rem;
+    }
+    .stat-lbl {
+      font-family: 'Cinzel', serif;
+      font-size: .6rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(240,224,192,.4);
+    }
+
+    /* ── PRODUCTS ── */
+    .products-section {
+      padding: 8rem 2rem;
+      background: var(--cream);
+    }
+    .products-hd { text-align: center; max-width: 580px; margin: 0 auto 3.5rem; }
+    .products-hd p { color: var(--muted); }
+
+    .filters {
+      display: flex;
+      justify-content: center;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+    .filter {
+      font-family: 'Cinzel', serif;
+      font-size: .65rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      padding: .45rem 1.4rem;
+      border: 1px solid rgba(74,28,0,.2);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .filter:hover { border-color: var(--gold); color: var(--gold); }
+    .filter.on { background: var(--espresso); border-color: var(--espresso); color: var(--gold-light); }
+
+    .grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .pcard {
+      background: var(--ivory);
+      border: 1px solid rgba(74,28,0,.1);
+      display: flex;
+      flex-direction: column;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .pcard:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(26,10,0,.12); }
+    .pcard[data-r="Light"]        .cband { background: #c8a070; }
+    .pcard[data-r="Light-Medium"] .cband { background: #a0743c; }
+    .pcard[data-r="Medium"]       .cband { background: #7a4e20; }
+    .pcard[data-r="Medium-Dark"]  .cband { background: #5a3010; }
+    .pcard[data-r="Dark"]         .cband { background: #3a1800; }
+    .cband { height: 5px; }
+
+    .cbody { padding: 1.75rem; flex: 1; display: flex; flex-direction: column; gap: .8rem; }
+    .cicon { font-size: 2.4rem; }
+    .corigin { font-family: 'Cinzel', serif; font-size: .62rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); }
+    .cname { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--espresso); }
+    .cbadges { display: flex; gap: .4rem; flex-wrap: wrap; }
+    .cbadge {
+      font-family: 'Cinzel', serif;
+      font-size: .58rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: .18rem .65rem;
+      border: 1px solid rgba(74,28,0,.15);
+      color: var(--muted);
+    }
+    .cnotes { font-style: italic; color: var(--muted); font-size: .92rem; line-height: 1.5; }
+    .cfoot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(74,28,0,.08);
+    }
+    .cprice { font-family: 'Playfair Display', serif; font-size: 1.45rem; color: var(--espresso); }
+    .cprice small { font-family: 'Cinzel', serif; font-size: .6rem; color: var(--muted); margin-left: .15rem; }
+    .addbtn {
+      background: var(--espresso);
+      color: var(--gold-light);
+      border: none;
+      padding: .5rem 1.15rem;
+      font-family: 'Cinzel', serif;
+      font-size: .62rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+    .addbtn:hover { background: var(--gold); color: var(--espresso); }
+    .pcard.hide { display: none; }
+
+    /* ── PROCESS ── */
+    .process { padding: 8rem 2rem; background: var(--ivory); }
+    .process-hd { text-align: center; margin-bottom: 5rem; }
+
+    .steps {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+      position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 2.5rem;
+      left: calc(16.66% + 1.2rem);
+      right: calc(16.66% + 1.2rem);
+      height: 1px;
+      background: repeating-linear-gradient(to right, var(--gold) 0, var(--gold) 6px, transparent 6px, transparent 14px);
+    }
+
+    .step { text-align: center; }
+    .step-num {
+      width: 5rem;
+      height: 5rem;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--gold);
+      background: var(--ivory);
+      position: relative;
+      z-index: 1;
+    }
+    .step h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--espresso); margin-bottom: .5rem; }
+    .step p { font-size: .9rem; color: var(--muted); line-height: 1.75; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials {
+      padding: 8rem 2rem;
+      background: var(--espresso);
+      text-align: center;
+    }
+    .testimonials .section-label { color: var(--gold); }
+    .testimonials .section-title { color: var(--cream); margin-bottom: 3rem; }
+
+    .tcarousel { max-width: 680px; margin: 0 auto; }
+    .tslide { display: none; }
+    .tslide.on { display: block; }
+
+    .qmark {
+      font-family: 'Playfair Display', serif;
+      font-size: 5.5rem;
+      line-height: 0;
+      padding-top: 2rem;
+      color: var(--gold);
+      opacity: .25;
+      display: block;
+      margin-bottom: 1.2rem;
+    }
+    .ttext {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.05rem, 2.5vw, 1.4rem);
+      color: var(--parchment);
+      line-height: 1.75;
+      margin-bottom: 2rem;
+    }
+    .tauthor { font-family: 'Cinzel', serif; font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+
+    .tdots { display: flex; justify-content: center; gap: .6rem; margin-top: 2.5rem; }
+    .tdot {
+      width: .45rem;
+      height: .45rem;
+      border-radius: 50%;
+      border: none;
+      background: rgba(201,162,39,.3);
+      cursor: pointer;
+      transition: background .2s, transform .2s;
+    }
+    .tdot.on { background: var(--gold); transform: scale(1.4); }
+
+    /* ── NEWSLETTER ── */
+    .newsletter {
+      background: var(--roast);
+      padding: 6.5rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .newsletter::before,
+    .newsletter::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px solid rgba(201,162,39,.05);
+    }
+    .newsletter::before { width: 500px; height: 500px; }
+    .newsletter::after  { width: 900px; height: 900px; }
+    .newsletter-in { position: relative; z-index: 1; }
+    .newsletter .section-title { color: var(--cream); }
+    .newsletter p { color: rgba(240,224,192,.55); margin-bottom: 2.5rem; }
+
+    .nform {
+      display: flex;
+      max-width: 460px;
+      margin: 0 auto;
+      border: 1px solid rgba(201,162,39,.28);
+    }
+    .nform input {
+      flex: 1;
+      padding: .9rem 1.2rem;
+      background: rgba(255,255,255,.05);
+      border: none;
+      color: var(--cream);
+      font-family: 'EB Garamond', serif;
+      font-size: 1rem;
+      outline: none;
+    }
+    .nform input::placeholder { color: rgba(240,224,192,.3); }
+    .nform button {
+      padding: .9rem 1.4rem;
+      background: var(--gold);
+      border: none;
+      color: var(--espresso);
+      font-family: 'Cinzel', serif;
+      font-size: .65rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .nform button:hover { opacity: .85; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--espresso);
+      padding: 5rem 2rem 2rem;
+    }
+    .footer-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 3.5rem;
+      border-bottom: 1px solid rgba(201,162,39,.1);
+      margin-bottom: 2rem;
+    }
+    .fbrand { font-family: 'Playfair Display', serif; font-size: 1.45rem; color: var(--cream); margin-bottom: .2rem; }
+    .ftag { font-family: 'Cinzel', serif; font-size: .55rem; letter-spacing: .35em; color: var(--gold); text-transform: uppercase; margin-bottom: 1rem; }
+    .fabout { font-size: .9rem; color: rgba(240,224,192,.38); line-height: 1.8; }
+    .fheading { font-family: 'Cinzel', serif; font-size: .65rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; }
+    .flinks { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+    .flinks a { font-size: .9rem; color: rgba(240,224,192,.4); transition: color .2s; }
+    .flinks a:hover { color: var(--gold-light); }
+    .fbar {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Cinzel', serif;
+      font-size: .58rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: rgba(240,224,192,.22);
+    }
+
+    /* ── CART DRAWER ── */
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 400; display: none; backdrop-filter: blur(3px); }
+    .overlay.open { display: block; }
+
+    .drawer {
+      position: fixed;
+      top: 0; right: -500px;
+      width: min(480px, 100vw);
+      height: 100vh;
+      background: var(--ivory);
+      z-index: 500;
+      display: flex;
+      flex-direction: column;
+      transition: right .35s cubic-bezier(.4,0,.2,1);
+    }
+    .drawer.open { right: 0; }
+
+    .dhead {
+      background: var(--espresso);
+      padding: 1.5rem 1.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(201,162,39,.15);
+    }
+    .dhead-text { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--cream); }
+    .dhead-text small { display: block; font-family: 'Cinzel', serif; font-size: .58rem; letter-spacing: .22em; color: var(--gold); font-style: normal; margin-top: .12rem; }
+
+    .closebtn {
+      background: none;
+      border: 1px solid rgba(201,162,39,.22);
+      color: var(--parchment);
+      width: 2.2rem; height: 2.2rem;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: border-color .2s, color .2s;
+    }
+    .closebtn:hover { border-color: var(--gold); color: var(--gold); }
+
+    .dbody { flex: 1; overflow-y: auto; padding: 1.5rem 1.75rem; }
+    .empty { text-align: center; color: var(--muted); margin-top: 4rem; font-style: italic; }
+    .empty span { display: block; font-size: 2.8rem; margin-bottom: .75rem; }
+
+    .citem {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid rgba(74,28,0,.08);
+    }
+    .citem-icon { font-size: 1.9rem; flex-shrink: 0; }
+    .citem-info { flex: 1; min-width: 0; }
+    .citem-name { font-family: 'Playfair Display', serif; font-size: .98rem; color: var(--espresso); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .citem-sub  { font-size: .78rem; color: var(--muted); margin-top: .08rem; }
+
+    .qctrl { display: flex; align-items: center; border: 1px solid rgba(74,28,0,.14); }
+    .qctrl button { width: 1.8rem; height: 1.8rem; background: none; border: none; cursor: pointer; font-size: 1rem; color: var(--espresso); transition: background .15s; }
+    .qctrl button:hover { background: var(--cream); }
+    .qctrl span { font-family: 'Cinzel', serif; font-size: .75rem; min-width: 1.5rem; text-align: center; }
+
+    .citem-price { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--espresso); min-width: 4.5rem; text-align: right; }
+
+    .dfoot { padding: 1.5rem 1.75rem; border-top: 1px solid rgba(74,28,0,.1); background: var(--cream); }
+    .total-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .35rem; }
+    .total-lbl { font-family: 'Cinzel', serif; font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+    .total-amt { font-family: 'Playfair Display', serif; font-size: 1.55rem; color: var(--espresso); }
+    .total-note { font-size: .8rem; color: var(--muted); margin-bottom: 1.2rem; }
+    .checkout {
+      width: 100%; padding: .95rem;
+      background: var(--espresso);
+      color: var(--gold-light);
+      border: none;
+      font-family: 'Cinzel', serif;
+      font-size: .72rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .checkout:hover { background: var(--gold); color: var(--espresso); }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 2.5rem; left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--espresso);
+      color: var(--gold-light);
+      border: 1px solid rgba(201,162,39,.22);
+      padding: .7rem 2rem;
+      font-family: 'Cinzel', serif;
+      font-size: .68rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: transform .3s, opacity .3s;
+      z-index: 600;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .story { grid-template-columns: 1fr; gap: 3rem; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .steps::before { display: none; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .steps { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .fbar { flex-direction: column; gap: .6rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="announce">Free Shipping on Orders Over $45 &nbsp;·&nbsp; Roasted Fresh to Order &nbsp;·&nbsp; Ethically Sourced</div>
+
+<nav id="mainnav">
+  <div class="nav-inner">
+    <ul class="nav-links">
+      <li><a href="#shop">Our Beans</a></li>
+      <li><a href="#story">Our Story</a></li>
+      <li><a href="#process">Process</a></li>
+    </ul>
+    <div class="nav-logo">Roast &amp; Co.<small>Est. 1887 · London</small></div>
+    <div style="display:flex;align-items:center;gap:1.5rem">
+      <ul class="nav-links">
+        <li><a href="#testimonials">Reviews</a></li>
+        <li><a href="#newsletter">Newsletter</a></li>
+      </ul>
+      <button class="cart-btn" onclick="toggleCart()">Cart <span id="cart-count">0</span></button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-frame"></div>
+  <div class="hero-content">
+    <div class="hero-badge fade-in">Est. 1887 · London, England</div>
+    <h1 class="fade-in d1">Exceptional Coffee,<br/><em>Exceptionally Sourced.</em></h1>
+    <p class="fade-in d2">We travel to the world's finest growing regions — the highlands of Ethiopia, the valleys of Colombia, the islands of Indonesia — to bring you beans worth savouring.</p>
+    <div class="hero-btns fade-in d3">
+      <a href="#shop" class="btn-gold">Shop Our Beans</a>
+      <a href="#story" class="btn-ghost">Our Story</a>
+    </div>
+  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div>Scroll</div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Single Origin</span><span class="dot">✦</span><span>Direct Trade</span><span class="dot">✦</span><span>Small Batch</span><span class="dot">✦</span><span>Hand Picked</span><span class="dot">✦</span><span>Freshly Roasted</span><span class="dot">✦</span><span>Ethically Sourced</span><span class="dot">✦</span><span>Shipped in 48 Hours</span><span class="dot">✦</span>
+    <span>Single Origin</span><span class="dot">✦</span><span>Direct Trade</span><span class="dot">✦</span><span>Small Batch</span><span class="dot">✦</span><span>Hand Picked</span><span class="dot">✦</span><span>Freshly Roasted</span><span class="dot">✦</span><span>Ethically Sourced</span><span class="dot">✦</span><span>Shipped in 48 Hours</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- STORY -->
+<section id="story">
+  <div class="story">
+    <div class="story-frame fade-in">
+      <div class="big-quote">"The cup reveals the character of the man who grew it."</div>
+      <div class="quote-attr">— Thomas Ashby, Founder, 1887</div>
+      <div class="story-icon">☕</div>
+    </div>
+    <div class="story-text fade-in d1">
+      <span class="section-label">Since 1887</span>
+      <h2 class="section-title">More Than a Century of Craft</h2>
+      <p>Our story begins in a small East London warehouse, where Thomas Ashby first experimented with green beans shipped directly from Ethiopian merchants. He believed that great coffee wasn't made — it was found, nurtured, and honoured.</p>
+      <p>Four generations later, we still travel to the source. We visit farms, sit with growers, taste alongside pickers. We pay above Fairtrade minimums because extraordinary coffee demands an extraordinary partnership.</p>
+      <p>Every bag you receive was roasted within 48 hours of shipping — never pre-roasted, never warehoused. Because coffee, like any great thing, deserves to be experienced at its best.</p>
+      <div style="margin-top:2rem"><a href="#shop" class="btn-gold">Explore the Collection</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-inner">
+    <div class="fade-in"><div class="stat-num">137</div><div class="stat-lbl">Years Roasting</div></div>
+    <div class="fade-in d1"><div class="stat-num">23</div><div class="stat-lbl">Farm Origins</div></div>
+    <div class="fade-in d2"><div class="stat-num">48h</div><div class="stat-lbl">Roast to Ship</div></div>
+    <div class="fade-in d3"><div class="stat-num">60k+</div><div class="stat-lbl">Happy Customers</div></div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="products-section" id="shop">
+  <div class="products-hd fade-in">
+    <span class="section-label">The Collection</span>
+    <h2 class="section-title">Our Finest Beans</h2>
+    <p>Each origin selected for its distinct character. Each roast calibrated to honour what the land gave us.</p>
+  </div>
+
+  <div class="filters" id="filters">
+    <button class="filter on" data-f="all">All Beans</button>
+    <button class="filter" data-f="Light">Light Roast</button>
+    <button class="filter" data-f="Medium">Medium Roast</button>
+    <button class="filter" data-f="Dark">Dark Roast</button>
+  </div>
+
+  <div class="grid" id="pgrid"></div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="process-hd fade-in">
+    <span class="section-label">From Seed to Cup</span>
+    <h2 class="section-title">How We Do It</h2>
+  </div>
+  <div class="steps">
+    <div class="step fade-in">
+      <div class="step-num">I</div>
+      <h3>Source</h3>
+      <p>We travel to farms across Ethiopia, Colombia, Indonesia, Guatemala, Kenya, and Brazil — tasting, selecting, and forging direct partnerships with growers who share our values.</p>
+    </div>
+    <div class="step fade-in d1">
+      <div class="step-num">II</div>
+      <h3>Roast</h3>
+      <p>Back in our East London roastery, every batch is drum-roasted to order. No shortcuts, no blending — just the bean, the heat, and a century of expertise.</p>
+    </div>
+    <div class="step fade-in d2">
+      <div class="step-num">III</div>
+      <h3>Ship</h3>
+      <p>Your bag is packed within hours of roasting and dispatched the same day. Peak flavour, guaranteed. We call it "Roaster Fresh" — you'll taste the difference immediately.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <span class="section-label">What Our Customers Say</span>
+  <h2 class="section-title">Trusted by Coffee Lovers</h2>
+  <div class="tcarousel" id="tcarousel">
+    <div class="tslide on">
+      <span class="qmark">"</span>
+      <p class="ttext">The Ethiopian Yirgacheffe is unlike anything I've had from a subscription service. You can actually taste the blueberry notes — it's not marketing fluff. This is the real thing.</p>
+      <p class="tauthor">Margaret H. — Edinburgh, Scotland</p>
+    </div>
+    <div class="tslide">
+      <span class="qmark">"</span>
+      <p class="ttext">I've been ordering from Roast &amp; Co. for three years. The consistency is remarkable — every bag of Colombian Supremo tastes exactly as it should. That's rare in specialty coffee.</p>
+      <p class="tauthor">James K. — Bristol, England</p>
+    </div>
+    <div class="tslide">
+      <span class="qmark">"</span>
+      <p class="ttext">As a barista, I'm fussy. But the Kenya AA is extraordinary — that wine-like acidity and currant finish is stunning. We now stock it at our café exclusively.</p>
+      <p class="tauthor">Sofia M. — Dublin, Ireland</p>
+    </div>
+  </div>
+  <div class="tdots" id="tdots"></div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter" id="newsletter">
+  <div class="newsletter-in fade-in">
+    <span class="section-label">Stay in the Know</span>
+    <h2 class="section-title">The Roaster's Dispatch</h2>
+    <p>New origins, seasonal roasts, and stories from the farms — delivered once a month. No noise.</p>
+    <form class="nform" onsubmit="handleNewsletter(event)">
+      <input type="email" placeholder="Your email address" required />
+      <button type="submit">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="fbrand">Roast &amp; Co.</div>
+      <div class="ftag">Est. 1887 · London, England</div>
+      <p class="fabout">A century of direct trade, small-batch roasting, and an unwavering belief that the finest coffee deserves to be experienced at its absolute best.</p>
+    </div>
+    <div>
+      <div class="fheading">Shop</div>
+      <ul class="flinks">
+        <li><a href="#shop">All Beans</a></li>
+        <li><a href="#">Light Roasts</a></li>
+        <li><a href="#">Medium Roasts</a></li>
+        <li><a href="#">Dark Roasts</a></li>
+        <li><a href="#">Gift Sets</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fheading">Company</div>
+      <ul class="flinks">
+        <li><a href="#story">Our Story</a></li>
+        <li><a href="#process">Our Process</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fheading">Help</div>
+      <ul class="flinks">
+        <li><a href="#">Shipping &amp; Returns</a></li>
+        <li><a href="#">Brewing Guides</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Wholesale</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="fbar">
+    <span>&copy; 2026 Roast &amp; Co. Ltd. All rights reserved.</span>
+    <span>Privacy Policy &nbsp;·&nbsp; Terms &amp; Conditions</span>
+  </div>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="overlay" id="overlay" onclick="toggleCart()"></div>
+<div class="drawer" id="drawer">
+  <div class="dhead">
+    <div class="dhead-text">Your Order<small>Roasted Fresh to Order</small></div>
+    <button class="closebtn" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="dbody" id="dbody"></div>
+  <div class="dfoot">
+    <div class="total-row">
+      <span class="total-lbl">Order Total</span>
+      <span class="total-amt" id="ctotal">$0.00</span>
+    </div>
+    <p class="total-note">Shipping calculated at checkout · Free over $45</p>
+    <button class="checkout" onclick="checkout()">Proceed to Checkout</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const PRODUCTS = [
+  { id:1, name:"Fatani يا عسل", origin:"Yirgacheffe, Ethiopia",  roast:"Light",        price:18.99, weight:"250g", notes:"Blueberry, jasmine & bright citrus",      img:"🫘" },
+  { id:2, name:"Colombian Supremo",     origin:"Huila, Colombia",         roast:"Medium",       price:15.99, weight:"250g", notes:"Caramel, toasted almond & milk chocolate", img:"☕" },
+  { id:3, name:"Sumatra Mandheling",    origin:"Mandheling, Indonesia",   roast:"Dark",         price:16.99, weight:"250g", notes:"Cedar, dark chocolate & earthy spice",     img:"🌑" },
+  { id:4, name:"Guatemala Antigua",     origin:"Antigua, Guatemala",      roast:"Medium-Dark",  price:17.49, weight:"250g", notes:"Brown sugar, cocoa & gentle smoke",         img:"🍫" },
+  { id:5, name:"Kenya AA",              origin:"Nyeri, Kenya",            roast:"Light-Medium", price:19.99, weight:"250g", notes:"Blackcurrant, wine & vivid acidity",        img:"🍇" },
+  { id:6, name:"Brazil Santos",         origin:"São Paulo, Brazil",       roast:"Medium",       price:13.99, weight:"250g", notes:"Hazelnut, sweet malt & low acidity",        img:"🥜" },
+];
+
+let cart = {};
+
+function renderProducts(filter = 'all') {
+  const grid = document.getElementById('pgrid');
+  grid.innerHTML = PRODUCTS.map((p, i) => {
+    const group = p.roast.includes('Dark') ? 'Dark' : p.roast.includes('Light') ? 'Light' : 'Medium';
+    const hide  = filter !== 'all' && group !== filter ? 'hide' : '';
+    return `
+      <div class="pcard fade-in ${hide}" data-r="${p.roast}" style="transition-delay:${i * .08}s">
+        <div class="cband"></div>
+        <div class="cbody">
+          <div class="cicon">${p.img}</div>
+          <div class="corigin">${p.origin}</div>
+          <div class="cname">${p.name}</div>
+          <div class="cbadges">
+            <span class="cbadge">${p.roast} Roast</span>
+            <span class="cbadge">${p.weight}</span>
+          </div>
+          <p class="cnotes">${p.notes}</p>
+          <div class="cfoot">
+            <div class="cprice">$${p.price.toFixed(2)}<small>/bag</small></div>
+            <button class="addbtn" onclick="addToCart(${p.id})">Add to Cart</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+  observeFade();
+}
+
+document.getElementById('filters').addEventListener('click', e => {
+  const btn = e.target.closest('.filter');
+  if (!btn) return;
+  document.querySelectorAll('.filter').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderProducts(btn.dataset.f);
+});
+
+function addToCart(id) {
+  cart[id] = (cart[id] || 0) + 1;
+  updateCart();
+  showToast(PRODUCTS.find(p => p.id === id).name + ' added');
+}
+
+function changeQty(id, d) {
+  cart[id] = (cart[id] || 0) + d;
+  if (cart[id] <= 0) delete cart[id];
+  updateCart();
+}
+
+function updateCart() {
+  const count = Object.values(cart).reduce((a,b) => a+b, 0);
+  document.getElementById('cart-count').textContent = count;
+
+  const body = document.getElementById('dbody');
+  const ids  = Object.keys(cart);
+  if (!ids.length) {
+    body.innerHTML = '<div class="empty"><span>☕</span>Your cart is empty.<br/>Add some exceptional beans.</div>';
+    document.getElementById('ctotal').textContent = '$0.00';
+    return;
+  }
+  let total = 0;
+  body.innerHTML = ids.map(id => {
+    const p   = PRODUCTS.find(x => x.id == id);
+    const qty = cart[id];
+    const sub = p.price * qty;
+    total += sub;
+    return `
+      <div class="citem">
+        <span class="citem-icon">${p.img}</span>
+        <div class="citem-info">
+          <div class="citem-name">${p.name}</div>
+          <div class="citem-sub">$${p.price.toFixed(2)} · ${p.weight}</div>
+        </div>
+        <div class="qctrl">
+          <button onclick="changeQty(${id},-1)">−</button>
+          <span>${qty}</span>
+          <button onclick="changeQty(${id},+1)">+</button>
+        </div>
+        <span class="citem-price">$${sub.toFixed(2)}</span>
+      </div>`;
+  }).join('');
+  document.getElementById('ctotal').textContent = `$${total.toFixed(2)}`;
+}
+
+function toggleCart() {
+  const d = document.getElementById('drawer');
+  const o = document.getElementById('overlay');
+  d.classList.toggle('open');
+  o.classList.toggle('open');
+  document.body.style.overflow = d.classList.contains('open') ? 'hidden' : '';
+}
+
+function checkout() {
+  if (!Object.keys(cart).length) { showToast('Your cart is empty'); return; }
+  cart = {};
+  updateCart();
+  toggleCart();
+  showToast('Order placed — thank you!');
+}
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function handleNewsletter(e) {
+  e.preventDefault();
+  e.target.reset();
+  showToast("You're subscribed — welcome aboard!");
+}
+
+// Testimonials
+const slides = document.querySelectorAll('.tslide');
+const dotsEl = document.getElementById('tdots');
+let cur = 0, timer;
+
+slides.forEach((_, i) => {
+  const b = document.createElement('button');
+  b.className = 'tdot' + (i === 0 ? ' on' : '');
+  b.onclick = () => goTo(i);
+  dotsEl.appendChild(b);
+});
+
+function goTo(n) {
+  slides[cur].classList.remove('on');
+  dotsEl.children[cur].classList.remove('on');
+  cur = (n + slides.length) % slides.length;
+  slides[cur].classList.add('on');
+  dotsEl.children[cur].classList.add('on');
+  clearInterval(timer);
+  timer = setInterval(() => goTo(cur + 1), 5000);
+}
+timer = setInterval(() => goTo(cur + 1), 5000);
+
+// Nav scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('mainnav').classList.toggle('scrolled', scrollY > 80);
+}, { passive: true });
+
+// Fade-in observer
+function observeFade() {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+}
+
+renderProducts();
+updateCart();
+observeFade();
+</script>
+</body>
+</html>
