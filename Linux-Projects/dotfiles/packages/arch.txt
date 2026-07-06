@@ -1,0 +1,41 @@
+# Packages for the full setup (Arch / CachyOS).
+# install.sh resolves each name against the official repos first and sends
+# the rest to your AUR helper (paru/yay). Lines starting with # are ignored.
+
+# ─── Desktop core ───
+niri                        # scrollable-tiling Wayland compositor
+noctalia-shell              # bar / launcher / lock / wallpaper shell (pulls quickshell)
+fuzzel                      # app launcher
+xdg-desktop-portal-gtk      # file pickers etc.
+xdg-desktop-portal-gnome    # screencast/screenshot portal for niri
+
+# ─── Terminal & shell ───
+alacritty
+fish
+fastfetch
+
+# ─── Editors & tools ───
+neovim                      # LazyVim config included
+micro
+btop
+git
+
+# ─── Theming ───
+python-pywal                # pywal — drives the whole color pipeline
+adw-gtk-theme               # GTK theme (adw-gtk3)
+capitaine-cursors           # cursor theme
+noto-fonts
+noto-fonts-cjk
+noto-fonts-emoji
+ttf-jetbrains-mono-nerd
+ttf-meslo-nerd
+
+# ─── Desktop utilities ───
+thunar                      # file manager (Mod+E)
+wl-clipboard                # wayland clipboard tools
+brightnessctl               # backlight control
+ddcutil                     # external-monitor brightness over DDC (noctalia)
+
+# ─── Apps (AUR) ───
+brave-bin                   # browser (Mod+B)
+nirimod-git                 # niri config manager

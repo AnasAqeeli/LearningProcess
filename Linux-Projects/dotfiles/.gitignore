@@ -1,0 +1,13 @@
+# Runtime state that apps write into the (symlinked) config dirs —
+# it belongs to the machine, not the repo.
+home/.config/fish/fish_variables
+home/.config/fish/completions/
+home/.config/micro/buffers/
+home/.config/micro/backups/
+home/.config/micro/syntax/
+home/.config/btop/btop.log
+home/.config/gtk-3.0/bookmarks
+home/.config/noctalia/*.bak*
+home/.config/niri/*.bak
+home/.config/niri/backup/
+*.log

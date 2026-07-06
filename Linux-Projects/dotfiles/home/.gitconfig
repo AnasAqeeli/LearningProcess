@@ -1,0 +1,21 @@
+# Identity lives in ~/.gitconfig.local (created by install.sh) so these
+# dotfiles can be shared without hardcoding anyone's name/email.
+[include]
+	path = ~/.gitconfig.local
+[core]
+	editor = nvim
+[init]
+	defaultBranch = main
+[color]
+	ui = auto
+[push]
+	autoSetupRemote = true
+[fetch]
+	prune = true
+[alias]
+	st = status -sb
+	co = checkout
+	br = branch
+	lg = log --oneline --graph --decorate -20
+	last = log -1 HEAD --stat
+	unstage = restore --staged

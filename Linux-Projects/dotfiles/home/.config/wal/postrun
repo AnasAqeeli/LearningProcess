@@ -1,0 +1,2 @@
+#!/bin/sh
+cp ~/.cache/wal/colors-noctalia.json ~/.config/noctalia/colors.json
