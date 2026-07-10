@@ -12,16 +12,27 @@ Built on [CachyOS](https://cachyos.org), works on any Arch-based distro
 
 ## Install
 
+These dotfiles live inside the
+[LearningProcess](https://github.com/AnasAqeeli/LearningProcess) monorepo,
+under `Linux-Projects/dotfiles`:
+
 ```bash
-git clone https://github.com/ansqli/dotfiles.git
-cd dotfiles && ./install.sh
+git clone https://github.com/AnasAqeeli/LearningProcess.git
+cd LearningProcess/Linux-Projects/dotfiles
+./install.sh
 ```
 
 Or without cloning anything first (the script clones for you):
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/ansqli/dotfiles/main/install.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/AnasAqeeli/LearningProcess/main/Linux-Projects/dotfiles/install.sh)
 ```
+
+The installer links the configs **and offers to install every missing
+program** from the [package list](packages/arch.txt) — the keybinds depend
+on them (alacritty, fuzzel, brave, thunar, nirimod, …). Anything already on
+the system is detected and left alone, so on CachyOS's niri edition it
+won't touch the preinstalled niri/noctalia.
 
 **It never deletes anything.** Every file it would touch is moved to
 `~/.dotfiles-backup/<timestamp>/` first, and `./install.sh --uninstall`
@@ -31,9 +42,10 @@ skipped.
 | flag | effect |
 |---|---|
 | `--dry-run` | print the plan, change nothing |
-| `--packages` | also install the [package list](packages/arch.txt) (pacman + paru/yay) |
+| `--packages` | install missing packages without asking (pacman + paru/yay) |
+| `--no-packages` | link configs only, skip package installation |
 | `--copy` | copy files instead of symlinking |
-| `--uninstall` | remove the links, restore the latest backup |
+| `--uninstall` | remove the links, restore your backed-up configs |
 | `-y` | no questions asked |
 
 ## What's inside

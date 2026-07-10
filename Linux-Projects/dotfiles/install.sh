@@ -5,20 +5,23 @@
 #  Symlinks every config in home/ into $HOME, backing up anything it
 #  would overwrite. Safe to re-run any time; nothing is ever deleted.
 #
-#    ./install.sh              link configs (interactive)
-#    ./install.sh --dry-run    show what would happen, touch nothing
-#    ./install.sh --packages   also install packages (Arch/CachyOS)
-#    ./install.sh --copy       copy files instead of symlinking
-#    ./install.sh --uninstall  remove links & restore the latest backup
-#    ./install.sh -y           assume "yes" to every prompt
+#    ./install.sh                 link configs + offer to install missing packages
+#    ./install.sh --dry-run       show what would happen, touch nothing
+#    ./install.sh --packages      install missing packages without asking
+#    ./install.sh --no-packages   skip package installation entirely
+#    ./install.sh --copy          copy files instead of symlinking
+#    ./install.sh --uninstall     remove links & restore your backups
+#    ./install.sh -y              assume "yes" to every prompt
 #
 #  Works standalone too — if this script is run outside a clone
 #  (e.g. `bash <(curl -fsSL …/install.sh)`), it clones the repo first.
 #
 set -Eeuo pipefail
 
-# Set this to your public repo before sharing (used only for bootstrapping).
-REPO_URL="${DOTFILES_REPO:-https://github.com/ansqli/dotfiles.git}"
+# The dotfiles live inside the LearningProcess monorepo, under REPO_SUBDIR.
+# (Only used when bootstrapping via `bash <(curl …/install.sh)`.)
+REPO_URL="${DOTFILES_REPO:-https://github.com/AnasAqeeli/LearningProcess.git}"
+REPO_SUBDIR="${DOTFILES_SUBDIR:-Linux-Projects/dotfiles}"
 CLONE_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
 
 # ─── pretty output ────────────────────────────────────────────────────────
@@ -49,12 +52,13 @@ EOF
 }
 
 # ─── options ──────────────────────────────────────────────────────────────
-DRY=0 COPY=0 PACKAGES=0 UNINSTALL=0 YES=0
+DRY=0 COPY=0 PACKAGES=0 NO_PACKAGES=0 UNINSTALL=0 YES=0
 for arg in "$@"; do
     case $arg in
         -n|--dry-run)   DRY=1 ;;
         --copy)         COPY=1 ;;
         -p|--packages)  PACKAGES=1 ;;
+        --no-packages)  NO_PACKAGES=1 ;;
         --uninstall)    UNINSTALL=1 ;;
         -y|--yes)       YES=1 ;;
         -h|--help)      awk 'NR>1 && !/^#/{exit} NR>1{sub(/^# ? ?/,""); print}' "$0"; exit 0 ;;
@@ -77,13 +81,13 @@ else
     banner
     step "Bootstrapping — cloning the repo"
     command -v git >/dev/null || { err "git is required to bootstrap"; exit 1; }
-    if [[ -d $CLONE_DIR/home ]]; then
+    if [[ -d $CLONE_DIR/$REPO_SUBDIR/home ]]; then
         info "existing clone found at $CLONE_DIR — pulling latest"
         git -C "$CLONE_DIR" pull --ff-only || warn "pull failed, using clone as-is"
     else
         git clone --depth=1 "$REPO_URL" "$CLONE_DIR"
     fi
-    exec "$CLONE_DIR/install.sh" "$@"
+    exec "$CLONE_DIR/$REPO_SUBDIR/install.sh" "$@"
 fi
 
 BACKUP_ROOT="$HOME/.dotfiles-backup"
@@ -164,21 +168,26 @@ if (( UNINSTALL )); then
             if (( DRY )); then say "  ${D}→ would unlink $rel${R}"; else rm "$dst"; ok "unlinked $rel"; fi
         fi
     done
-    latest=$(find "$BACKUP_ROOT" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sort | tail -1 || true)
-    if [[ -n ${latest:-} ]]; then
-        step "Restoring backup $(basename "$latest")"
-        if (( DRY )); then
-            say "  ${D}→ would restore $(find "$latest" -mindepth 1 -maxdepth 2 | wc -l) items${R}"
-        else
-            (cd "$latest" && find . -mindepth 1 -maxdepth 3 \( -type f -o -type d -o -type l \) -print0) |
+    # Walk every snapshot newest→oldest: each path is restored from the most
+    # recent snapshot that has it, so re-running install several times can
+    # never lose the pre-dotfiles originals to an almost-empty "latest".
+    mapfile -t snaps < <(find "$BACKUP_ROOT" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sort -r)
+    if (( ${#snaps[@]} )); then
+        step "Restoring from ${#snaps[@]} backup snapshot(s)"
+        RESTORED=0
+        for snap in "${snaps[@]}"; do
+            if (( DRY )); then
+                say "  ${D}→ would restore missing items from $(basename "$snap")${R}"
+                continue
+            fi
             while IFS= read -r -d '' item; do
                 rel=${item#./}
                 [[ -e "$HOME/$rel" || -L "$HOME/$rel" ]] && continue
                 mkdir -p "$HOME/$(dirname "$rel")"
-                cp -a "$latest/$rel" "$HOME/$rel" 2>/dev/null || true
-            done
-            ok "restored what was missing (backup kept at $latest)"
-        fi
+                { cp -a "$snap/$rel" "$HOME/$rel" 2>/dev/null && (( ++RESTORED )); } || true
+            done < <(cd "$snap" && find . -mindepth 1 -maxdepth 3 \( -type f -o -type d -o -type l \) -print0)
+        done
+        (( DRY )) || ok "restored $RESTORED item(s) — backups kept in $BACKUP_ROOT"
     else
         info "no backups found to restore"
     fi
@@ -226,16 +235,23 @@ else
     info "~/.gitconfig.local already present"
 fi
 
-# 2. absolute paths inside noctalia's settings follow whoever installs this
+# 2. absolute paths captured in the configs (noctalia settings, pywal
+#    template output, …) follow whoever installs this
 if [[ $HOME != /home/ansqli && $DRY == 0 ]]; then
-    sed -i "s|/home/ansqli|$HOME|g" "$REPO_DIR/home/.config/noctalia/settings.json"
-    ok "pointed noctalia paths at $HOME"
+    mapfile -t pathed < <(grep -rIl -- "/home/ansqli" "$REPO_DIR/home" 2>/dev/null || true)
+    if (( ${#pathed[@]} )); then
+        sed -i "s|/home/ansqli|$HOME|g" "${pathed[@]}"
+        ok "pointed ${#pathed[@]} config file(s) at $HOME"
+    fi
 fi
 (( DRY )) || mkdir -p "$HOME/Pictures/Wallpapers"
 
 # ─── packages (Arch / CachyOS) ────────────────────────────────────────────
-if (( PACKAGES )); then
-    step "Installing packages"
+# Runs by default: the keybinds spawn alacritty/fuzzel/brave/thunar/nirimod…,
+# so a linked-but-not-installed setup is a broken desktop. Anything already
+# present (e.g. noctalia on CachyOS's niri edition) is detected and skipped.
+if (( ! NO_PACKAGES )); then
+    step "Packages"
     if ! command -v pacman >/dev/null; then
         warn "not an Arch-based system — install these yourself:"
         sed 's/#.*//' "$REPO_DIR/packages/arch.txt" | awk 'NF' | sed 's/^/      /'
@@ -250,7 +266,7 @@ if (( PACKAGES )); then
             say "  missing: ${B}${missing[*]}${R}"
             if (( DRY )); then
                 info "dry-run: would install ${#in_repo[@]} from repos, ${#in_aur[@]} from AUR"
-            elif confirm "Install ${#missing[@]} packages now?"; then
+            elif (( PACKAGES )) || confirm "Install ${#missing[@]} packages now?"; then
                 (( ${#in_repo[@]} )) && sudo pacman -S --needed --noconfirm "${in_repo[@]}"
                 if (( ${#in_aur[@]} )); then
                     helper=$(command -v paru || command -v yay || true)
@@ -268,6 +284,13 @@ fi
 
 # ─── first-run niceties ───────────────────────────────────────────────────
 step "Finishing touches"
+if command -v niri >/dev/null && [[ -e $HOME/.config/niri/config.kdl ]] && (( ! DRY )); then
+    if niri validate -c "$HOME/.config/niri/config.kdl" >/dev/null 2>&1; then
+        ok "niri accepts the config — keybinds will load"
+    else
+        warn "niri REJECTED the config — keybinds won't apply until it's fixed; run: niri validate"
+    fi
+fi
 if command -v wal >/dev/null; then
     if [[ ! -s $HOME/.cache/wal/colors.json ]]; then
         if (( DRY )); then

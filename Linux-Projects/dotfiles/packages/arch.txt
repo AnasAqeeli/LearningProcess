@@ -6,8 +6,10 @@
 niri                        # scrollable-tiling Wayland compositor
 noctalia-shell              # bar / launcher / lock / wallpaper shell (pulls quickshell)
 fuzzel                      # app launcher
+xwayland-satellite          # X11 apps under niri (Steam, Discord, …)
 xdg-desktop-portal-gtk      # file pickers etc.
 xdg-desktop-portal-gnome    # screencast/screenshot portal for niri
+paru                        # AUR helper (repo package on CachyOS) — builds the AUR section below
 
 # ─── Terminal & shell ───
 alacritty
@@ -35,7 +37,8 @@ thunar                      # file manager (Mod+E)
 wl-clipboard                # wayland clipboard tools
 brightnessctl               # backlight control
 ddcutil                     # external-monitor brightness over DDC (noctalia)
+wlsunset                    # night light (noctalia toggle)
 
-# ─── Apps (AUR) ───
+# ─── Apps (AUR on vanilla Arch; CachyOS ships brave-bin in its repos) ───
 brave-bin                   # browser (Mod+B)
-nirimod-git                 # niri config manager
+nirimod-git                 # nirimod — visual niri config editor
