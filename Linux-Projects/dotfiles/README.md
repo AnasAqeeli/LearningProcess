@@ -76,7 +76,15 @@ Set a wallpaper and the whole desktop follows:
 ```
 
 Templates live in [`home/.config/wal/templates/`](home/.config/wal/templates).
-Noctalia's startup hook runs `wal -R`, so the palette survives reboots.
+Noctalia's startup hook runs `wal -R`, so the palette survives reboots, and its
+wallpaper-change hook ([`scripts/wal-wallpaper.sh`](home/.config/noctalia/scripts/wal-wallpaper.sh))
+re-runs pywal whenever you pick a wallpaper in noctalia — both paths end at the
+same palette. Noctalia's own color scheme is left unset on purpose: a predefined
+scheme would overwrite the pywal colors at every shell start.
+
+The default wallpaper ships in [`wallpapers/`](wallpapers) — `install.sh` copies
+it to `~/Pictures/Wallpapers` and applies it (live via noctalia's IPC when the
+shell is running, otherwise staged for the first launch).
 
 ## Keybinds you'll actually use
 

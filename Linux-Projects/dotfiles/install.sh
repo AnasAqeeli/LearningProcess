@@ -246,6 +246,27 @@ if [[ $HOME != /home/ansqli && $DRY == 0 ]]; then
 fi
 (( DRY )) || mkdir -p "$HOME/Pictures/Wallpapers"
 
+# 3. the shipped default wallpaper — copied into place and applied on every
+#    install, so a fresh (or re-) install always lands on the intended look
+WALL_SRC="$REPO_DIR/wallpapers/3840x2160.jpg"
+WALL_DST="$HOME/Pictures/Wallpapers/3840x2160.jpg"
+if [[ -f $WALL_SRC ]]; then
+    if (( DRY )); then
+        info "dry-run: would install & apply the default wallpaper"
+    else
+        cp -f "$WALL_SRC" "$WALL_DST"
+        if command -v qs >/dev/null && qs -c noctalia-shell ipc call wallpaper set "$WALL_DST" all >/dev/null 2>&1; then
+            ok "default wallpaper applied — noctalia switched to it"
+        else
+            # no running shell: seed noctalia's cache so the first launch uses it
+            mkdir -p "$HOME/.cache/noctalia"
+            printf '{\n    "defaultWallpaper": "%s",\n    "wallpapers": { "": { "dark": "%s", "light": "%s" } }\n}\n' \
+                "$WALL_DST" "$WALL_DST" "$WALL_DST" > "$HOME/.cache/noctalia/wallpapers.json"
+            ok "default wallpaper staged — noctalia picks it up on first launch"
+        fi
+    fi
+fi
+
 # ─── packages (Arch / CachyOS) ────────────────────────────────────────────
 # Runs by default: the keybinds spawn alacritty/fuzzel/brave/thunar/nirimod…,
 # so a linked-but-not-installed setup is a broken desktop. Anything already
@@ -292,9 +313,18 @@ if command -v niri >/dev/null && [[ -e $HOME/.config/niri/config.kdl ]] && (( ! 
     fi
 fi
 if command -v wal >/dev/null; then
-    if [[ ! -s $HOME/.cache/wal/colors.json ]]; then
+    if [[ -f $WALL_DST ]]; then
         if (( DRY )); then
-            info "dry-run: would seed pywal with the gruvbox palette"
+            info "dry-run: would run pywal on the default wallpaper"
+        elif wal -n -i "$WALL_DST" >/dev/null 2>&1; then
+            cp -f "$HOME/.cache/wal/colors-noctalia.json" "$HOME/.config/noctalia/colors.json" 2>/dev/null || true
+            ok "pywal themed everything from the default wallpaper"
+        else
+            warn "pywal failed on the wallpaper — run 'wal -i <image>' manually"
+        fi
+    elif [[ ! -s $HOME/.cache/wal/colors.json ]]; then
+        if (( DRY )); then
+            info "dry-run: would seed pywal from the default wallpaper"
         elif wal --theme gruvbox >/dev/null 2>&1; then
             cp -f "$HOME/.cache/wal/colors-noctalia.json" "$HOME/.config/noctalia/colors.json" 2>/dev/null || true
             ok "seeded pywal with gruvbox (run 'wal -i <wallpaper>' to make it yours)"

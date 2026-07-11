@@ -257,7 +257,7 @@
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
         "monitorForColors": "",
-        "predefinedScheme": "Gruvbox",
+        "predefinedScheme": "",
         "schedulingMode": "off",
         "syncGsettings": true,
         "useWallpaperColors": false
@@ -456,7 +456,7 @@
         "screenUnlock": "",
         "session": "",
         "startup": "wal -R && cp ~/.cache/wal/colors-noctalia.json ~/.config/noctalia/colors.json",
-        "wallpaperChange": ""
+        "wallpaperChange": "~/.config/noctalia/scripts/wal-wallpaper.sh \"$1\""
     },
     "idle": {
         "customCommands": "[]",
